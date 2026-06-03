@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="I Ching Divination Tool">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="manifest.json">
+	<link rel="icon" type="image/svg+xml" href="icon.svg">
+    <title>易經筮法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #444;
+            background: #2a2a3e;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #666;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4a7c59;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #5a9c79;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .result {
+            background: #3a3a4e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            display: none;
+            border-left: 4px solid #4a7c59;
+        }
+        .result.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
+        .result-timestamp {
+            color: #888;
+            font-size: 0.9em;
+        }
+        .symbols {
+            font-size: 2em;
+            letter-spacing: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .result-content {
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .history-section {
+            margin-top: 40px;
+        }
+        .history-section h2 {
+            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 1.2em;
+        }
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .history-item {
+            background: #2a2a3e;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-left: 3px solid #666;
+        }
+        .history-item:hover {
+            background: #333349;
+        }
+        .history-item-query {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .history-item-time {
+            color: #888;
+            font-size: 0.85em;
+        }
+        .clear-btn {
+            background: #7c4a4a;
+            margin-top: 15px;
+            padding: 8px;
+            font-size: 0.9em;
+        }
+        .clear-btn:hover {
+            background: #9c5a5a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>易經筮法</h1>
+            <p>假爾泰筮有常，假爾泰筮有常。</p>
+        </div>
+
+        <div class="form-group">
+            <textarea id="query" placeholder="弟子想問:" rows="3"></textarea>
+        </div>
+
+        <button onclick="consult()">吉凶悔吝，尚明告知。</button>
+
+        <div id="result" class="result">
+            <div class="result-header">
+                <div id="query-title"></div>
+                <div class="result-timestamp" id="result-time"></div>
+            </div>
+            <div class="symbols" id="symbols"></div>
+            <div id="result-content" class="result-content"></div>
+        </div>
+
+        <div class="history-section">
+            <h2>歷史記錄</h2>
+            <div class="history-list" id="history-list"></div>
+            <button class="clear-btn" onclick="clearHistory()">清除所有記錄</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
